@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-const byte JOYSTICK_BASE  = 16; // it's a "virtual" channel: its ID won't conflict with real ones
+const byte JOYSTICK_BASE  = 19; // it's a "virtual" channel: its ID won't conflict with real ones
 
 // const byte MAX_CHANNELS   = 13;
 
@@ -58,8 +58,11 @@ const byte JOYSTICK_BASE  = 16; // it's a "virtual" channel: its ID won't confli
 
 const byte MAX_CHANNELS   = 21;
 
-const byte CH_L1Button = 6; //s2
-const byte CH_L2Button = 7; //s1
+const byte CH_L1Button = 7; //s2
+const byte CH_L2Button = 6; //s1
+
+const byte CH_R1Button = 12; //s13
+const byte CH_R2Button = 11; //s12
 
 const byte CH_UpButton = 4; //s4
 const byte CH_DownButton = 2; //s6
@@ -69,9 +72,6 @@ const byte CH_RightButton = 5; //s3
 const byte CH_LeftJoystickButton = 13; //s14
 const byte CH_LeftJoystickX = 7;
 const byte CH_LeftJoystickY = 8;
-
-const byte CH_R1Button = 12; //s13
-const byte CH_R2Button = 11; //s12
 
 const byte CH_TriangleButton = 9; //s10
 const byte CH_OButton = 8; //s9
@@ -87,30 +87,40 @@ const byte CH_OptionButton = 14; //s15
 
 const byte CH_HomeButton = 1; //s7
 
+//const byte JOYSTICK_BASE  = 19; // it's a "virtual" channel: its ID won't conflict with real ones
+
+const byte JOYSTICK_DOWN  = JOYSTICK_BASE;
+const byte JOYSTICK_LEFT  = JOYSTICK_BASE+1;
+const byte JOYSTICK_UP    = JOYSTICK_BASE+2;
+const byte JOYSTICK_RIGHT = JOYSTICK_BASE+3;
+
+
 class _Controlduino {
 private:
-	unsigned int readChannel(byte channel);
 
+    boolean joyLowHalf(byte joyCh);
+    boolean joyHighHalf(byte joyCh);
+    
 public:
 	_Controlduino();
-
+	unsigned int readChannel(byte channel);
 	// inline unsigned int readJoystickSwitch() { return readChannel(CH_JOYSTICK_SW); }
 	boolean readButton(byte channel);
 
 	inline int readLeftJoystickX() { 
-		return readChannel(CH_LeftJoystickX) - 512;
+		return analogRead(A3);
 	}
 
 	inline int readLeftJoystickY() {
-		return readChannel(CH_LeftJoystickY) - 512;
+		return analogRead(A2);
 	}
 
 	inline int readRightJoystickX() { 
-		return readChannel(CH_RightJoystickX) - 512;
+		return analogRead(A4);
 	}
 
 	inline int readRightJoystickY() {
-		return readChannel(CH_RightJoystickY) - 512;
+		return analogRead(A5);
 	}
 };
 
